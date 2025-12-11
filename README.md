@@ -23,6 +23,8 @@ attention-u-net_for_oil-spill/
 ├── notebooks/
 │   ├── oil_spill_detection.ipynb               # Oil spill detection training & evaluation
 │   └── deforestation_reproduction.ipynb        # Deforestation paper reproduction
+├── figures/                                    # Plots and visualizations used in poster
+│   └── ...
 ├── dataset/                                    # Oil spill SAR dataset
 │   ├── 01_Train_Val_Oil_Spill_images/
 │   │   └── Oil/                                # Oil spill TIF images
