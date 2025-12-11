@@ -285,9 +285,3 @@ print(f"Model downloaded to: {model_path}")
 2. Trujillo-Acatitla, R., Tuxpan-Vargas, J., Ovando-Vázquez, C. & Monterrubio-Martínez, E. (2024) ‘Marine oil spill detection and segmentation in SAR data with two steps Deep Learning framework’, Marine Pollution Bulletin, 204, p. 116549.
 
 3. HarisIqbal88. (n.d.). PlotNeuralNet [Computer software]. GitHub. https://github.com/HarisIqbal88/PlotNeuralNet/tree/master
-
-## Acknowledgments
-
-- PyTorch team for the excellent deep learning framework
-- Weights & Biases for experiment tracking tools
-- SAR satellite data providers
