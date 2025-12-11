@@ -1,0 +1,317 @@
+
+\documentclass[border=8pt, multi, tikz]{standalone} 
+\usepackage{import}
+\subimport{../layers/}{init}
+\usetikzlibrary{positioning}
+\usetikzlibrary{3d} %for including external image 
+
+\def\ConvColor{rgb:yellow,5;red,2.5;white,5}
+\def\ConvReluColor{rgb:yellow,5;red,5;white,5}
+\def\PoolColor{rgb:red,1;black,0.3}
+\def\UnpoolColor{rgb:blue,2;green,1;black,0.3}
+\def\FcColor{rgb:blue,5;red,2.5;white,5}
+\def\FcReluColor{rgb:blue,5;red,5;white,4}
+\def\SoftmaxColor{rgb:magenta,5;black,7}   
+\def\SumColor{rgb:blue,5;green,15}
+
+\newcommand{\copymidarrow}{\tikz \draw[-Stealth,line width=0.8mm,draw={rgb:blue,4;red,1;green,1;black,3}] (-0.3,0) -- ++(0.3,0);}
+
+\begin{document}
+\begin{tikzpicture}
+\tikzstyle{connection}=[ultra thick,every node/.style={sloped,allow upside down},draw=\edgecolor,opacity=0.7]
+\tikzstyle{copyconnection}=[ultra thick,every node/.style={sloped,allow upside down},draw={rgb:blue,4;red,1;green,1;black,3},opacity=0.7]
+
+\node[canvas is zy plane at x=0] (temp) at (-3,0,0) {\includegraphics[width=12cm,height=12cm]{oil spill example.png}};
+
+\pic[shift={(1,0,0)}] at (0,0,0) 
+    {Box={
+        name=enc1,
+        caption=64,
+        xlabel={{64, }},
+        zlabel=64,
+        fill=\ConvColor,
+        height=40,
+        width=2,
+        depth=40
+        }
+    };
+
+\pic[shift={ (0.5,0,0) }] at (enc1-east) 
+    {Box={
+        name=pool1,
+        caption= ,
+        fill=\PoolColor,
+        opacity=0.5,
+        height=32,
+        width=1,
+        depth=32
+        }
+    };
+
+\pic[shift={(1,0,0)}] at (pool1-east) 
+    {Box={
+        name=enc2,
+        caption=128,
+        xlabel={{32, }},
+        zlabel=128,
+        fill=\ConvColor,
+        height=32,
+        width=3,
+        depth=32
+        }
+    };
+
+\pic[shift={ (0.5,0,0) }] at (enc2-east) 
+    {Box={
+        name=pool2,
+        caption= ,
+        fill=\PoolColor,
+        opacity=0.5,
+        height=25,
+        width=1,
+        depth=25
+        }
+    };
+
+\pic[shift={(1,0,0)}] at (pool2-east) 
+    {Box={
+        name=enc3,
+        caption=256,
+        xlabel={{25, }},
+        zlabel=256,
+        fill=\ConvColor,
+        height=25,
+        width=4,
+        depth=25
+        }
+    };
+
+\pic[shift={ (0.5,0,0) }] at (enc3-east) 
+    {Box={
+        name=pool3,
+        caption= ,
+        fill=\PoolColor,
+        opacity=0.5,
+        height=18,
+        width=1,
+        depth=18
+        }
+    };
+
+\pic[shift={(1,0,0)}] at (pool3-east) 
+    {Box={
+        name=enc4,
+        caption=512,
+        xlabel={{18, }},
+        zlabel=512,
+        fill=\ConvColor,
+        height=18,
+        width=5,
+        depth=18
+        }
+    };
+
+\pic[shift={ (0.5,0,0) }] at (enc4-east) 
+    {Box={
+        name=pool4,
+        caption= ,
+        fill=\PoolColor,
+        opacity=0.5,
+        height=12,
+        width=1,
+        depth=12
+        }
+    };
+
+\pic[shift={(1,0,0)}] at (pool4-east) 
+    {Box={
+        name=bottleneck,
+        caption=1024,
+        xlabel={{12, }},
+        zlabel=1024,
+        fill=\ConvColor,
+        height=12,
+        width=6,
+        depth=12
+        }
+    };
+
+\pic[shift={(1.5,0,0)}] at (bottleneck-east) 
+    {Box={
+        name=up4,
+        caption=512,
+        xlabel={{18, }},
+        zlabel=512,
+        fill=\ConvColor,
+        height=18,
+        width=5,
+        depth=18
+        }
+    };
+
+\pic[shift={(1.2,4,0)}] at (enc4-east) 
+    {Box={
+        name=att4,
+        caption=AG,
+        xlabel={{5, }},
+        zlabel=1,
+        fill=\ConvColor,
+        height=5,
+        width=1,
+        depth=5
+        }
+    };
+\draw [connection] (enc4-north) -- ++(0,2,0) -- (att4-west);\draw [connection] (up4-north)  -- ++(0,1.5,0) -- (att4-east);
+\pic[shift={(1.5,0,0)}] at (up4-east) 
+    {Box={
+        name=dec4,
+        caption=512,
+        xlabel={{18, }},
+        zlabel=512,
+        fill=\ConvColor,
+        height=18,
+        width=5,
+        depth=18
+        }
+    };
+
+\draw [connection]  (att4-east)    -- node {\midarrow} (dec4-west);
+
+\pic[shift={(1.5,0,0)}] at (dec4-east) 
+    {Box={
+        name=up3,
+        caption=256,
+        xlabel={{25, }},
+        zlabel=256,
+        fill=\ConvColor,
+        height=25,
+        width=4,
+        depth=25
+        }
+    };
+
+\pic[shift={(1.2,6,0)}] at (enc3-east) 
+    {Box={
+        name=att3,
+        caption=AG,
+        xlabel={{5, }},
+        zlabel=1,
+        fill=\ConvColor,
+        height=5,
+        width=1,
+        depth=5
+        }
+    };
+\draw [connection] (enc3-north) -- ++(0,2,0) -- (att3-west);\draw [connection] (up3-north)  -- ++(0,1.5,0) -- (att3-east);
+\pic[shift={(1.5,0,0)}] at (up3-east) 
+    {Box={
+        name=dec3,
+        caption=256,
+        xlabel={{25, }},
+        zlabel=256,
+        fill=\ConvColor,
+        height=25,
+        width=4,
+        depth=25
+        }
+    };
+
+\draw [connection]  (att3-east)    -- node {\midarrow} (dec3-west);
+
+\pic[shift={(1.5,0,0)}] at (dec3-east) 
+    {Box={
+        name=up2,
+        caption=128,
+        xlabel={{32, }},
+        zlabel=128,
+        fill=\ConvColor,
+        height=32,
+        width=3,
+        depth=32
+        }
+    };
+
+\pic[shift={(1.2,8,0)}] at (enc2-east) 
+    {Box={
+        name=att2,
+        caption=AG,
+        xlabel={{5, }},
+        zlabel=1,
+        fill=\ConvColor,
+        height=5,
+        width=1,
+        depth=5
+        }
+    };
+\draw [connection] (enc2-north) -- ++(0,2,0) -- (att2-west);\draw [connection] (up2-north)  -- ++(0,1.5,0) -- (att2-east);
+\pic[shift={(1.5,0,0)}] at (up2-east) 
+    {Box={
+        name=dec2,
+        caption=128,
+        xlabel={{32, }},
+        zlabel=128,
+        fill=\ConvColor,
+        height=32,
+        width=3,
+        depth=32
+        }
+    };
+
+\draw [connection]  (att2-east)    -- node {\midarrow} (dec2-west);
+
+\pic[shift={(1.5,0,0)}] at (dec2-east) 
+    {Box={
+        name=up1,
+        caption=64,
+        xlabel={{40, }},
+        zlabel=64,
+        fill=\ConvColor,
+        height=40,
+        width=2,
+        depth=40
+        }
+    };
+
+\pic[shift={(1.2,10,0)}] at (enc1-east) 
+    {Box={
+        name=att1,
+        caption=AG,
+        xlabel={{5, }},
+        zlabel=1,
+        fill=\ConvColor,
+        height=5,
+        width=1,
+        depth=5
+        }
+    };
+\draw [connection] (enc1-north) -- ++(0,2,0) -- (att1-west);\draw [connection] (up1-north)  -- ++(0,1.5,0) -- (att1-east);
+\pic[shift={(1.5,0,0)}] at (up1-east) 
+    {Box={
+        name=dec1,
+        caption=64,
+        xlabel={{40, }},
+        zlabel=64,
+        fill=\ConvColor,
+        height=40,
+        width=2,
+        depth=40
+        }
+    };
+
+\draw [connection]  (att1-east)    -- node {\midarrow} (dec1-west);
+
+\pic[shift={(1.5,0,0)}] at (dec1-east) 
+    {Box={
+        name=out,
+        caption=1,
+        xlabel={{40, }},
+        zlabel=1,
+        fill=\ConvColor,
+        height=40,
+        width=1,
+        depth=40
+        }
+    };
+
+\end{tikzpicture}
+\end{document}
