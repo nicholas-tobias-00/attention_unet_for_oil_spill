@@ -4,6 +4,12 @@ A deep learning system for detecting oil spills in SAR (Synthetic Aperture Radar
 
 **Recommended Model:** `attention_unet_oil_spill_improved.pth` (Weighted BCE) - Achieves better F1-Score (65.6%) and IoU (48.8%) compared to standard BCE.
 
+## Before You Start
+1. **For Sustainability Analysis on Attention U-Net for Oil Spill Detection, Refer to [SUSTAINABILITY_ANALYSIS.md](SUSTAINABILITY_ANALYSIS.md)**
+
+2. **For complete data preprocessing instructions** (downloading Sentinel-1 data and processing with SNAP), **refer to [DATA_GUIDE.md](DATA_GUIDE.md)**
+
+
 ## Features
 
 - **Attention U-Net Architecture**: Advanced segmentation model with attention gates for improved feature selection
@@ -91,11 +97,6 @@ wandb login
 # Enter your API key when prompted
 # Or set environment variable: export WANDB_API_KEY=your_api_key
 ```
-
-5. **For Report on Oil Spill Implementation, Refer to [SUSTAINABILITY_ANALYSIS.md](SUSTAINABILITY_ANALYSIS.md)**
-
-6. **For complete preprocessing instructions** (downloading Sentinel-1 data and processing with SNAP), **refer to [DATA_GUIDE.md](DATA_GUIDE.md)**
-
 
 ## Data Preparation
 
