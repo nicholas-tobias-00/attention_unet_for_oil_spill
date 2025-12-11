@@ -66,47 +66,56 @@ See the notebook in `deforestation-adaptation/notebooks/deforestation_reproducti
 
 ### 2.1 Problem Definition and SDG Alignment
 
-**Selected Context:** United Kingdom Exclusive Economic Zone (EEZ) and North Sea
+1. Ocean life is critical to humanity, based on UN’s Food and Agriculture Organization report: 
+    - Supports the livelihood of more than 3 billion people
+    - Produces 50% of earth’s O2
+    - Absorbs 30% of earth’s CO2
 
-**Problem Statement:** The North Sea is one of the world's busiest maritime regions, with significant oil and gas infrastructure and shipping traffic. Oil spills from:
-- Offshore drilling platforms
-- Ship-to-ship transfers
-- Vessel accidents and illegal discharges
-- Pipeline leaks
+2. Oil spills severely damage the ecosystem by killing marine life directly, as well as poison their habitats for years, potentially leading to a change in the food chain.
 
-pose severe threats to marine ecosystems, fisheries, and coastal communities.
+3. The monitoring of oceans is very difficult given that it encompasses two-thirds of the earth’s surface. With most ocean territory being international waters, it is also extremely hard to enforce laws over oil spills.
 
-**Primary SDG Alignment:**
+These challenges point to the need for automated ocean monitoring, and Attention U-Net provides a strong solution by being able to focus on subtle patterns while suppressing the many irrelevant background noise of the ocean.
+
+
+#### **Primary SDG Alignment:**
 
 #### SDG 14: Life Below Water
-![SDG 14](figures/UN%20SDGs/E-WEB-Goal-14.png)
 
 *"Conserve and sustainably use the oceans, seas and marine resources for sustainable development"*
 
 | Target | Project Contribution |
 |--------|---------------------|
-| **14.1** - Prevent and significantly reduce marine pollution | Automated early detection enables rapid response, reducing spill spread by up to 60% |
-| **14.2** - Sustainably manage and protect marine ecosystems | Continuous monitoring supports ecosystem health assessment |
-| **14.a** - Increase scientific knowledge for ocean health | Advances SAR image analysis and deep learning for oceanography |
+| **14.1** - Prevent and significantly reduce marine pollution | Reducing marine pollution by early oil spill detection. |
+| **14.2** - Sustainably manage and protect marine ecosystems | Supports protection of marine ecosystem by monitoring.|
+| **14.a** - Increase scientific knowledge for ocean health | Contributes to enhancing ocean science. |
 
 #### SDG 13: Climate Action
-![SDG 13](figures/UN%20SDGs/E-WEB-Goal-13.png)
 
 *"Take urgent action to combat climate change and its impacts"*
 
 | Target | Project Contribution |
 |--------|---------------------|
-| **13.1** - Strengthen resilience to climate-related hazards | Protects marine carbon sinks (seagrass, phytoplankton) |
-| **13.3** - Improve education and awareness on climate | Demonstrates AI applications for environmental monitoring |
+| **13.1** - Strengthen resilience to climate-related hazards | Increasing resilience and adaptive capacity to climate-related hazards. |
+|**13.2** - Integrate climate change measures into policies and planning | Provides data to support further climate action or policies.|
+| **13.3** - Improve education and awareness on climate | Provides foundation for autonomous monitoring and awareness of oil spills. |
 
-**Secondary SDG Alignment:**
+#### SDG 12: Responsible Consumption and Production
 
-| SDG | Contribution |
-|-----|-------------|
-| **SDG 3: Good Health** | Protects coastal communities from contaminated water/seafood |
-| **SDG 8: Economic Growth** | Safeguards fishing and tourism industries |
-| **SDG 9: Innovation** | Demonstrates AI for environmental infrastructure |
-| **SDG 17: Partnerships** | Open-source enables global collaboration |
+*"Ensure sustainable consumption and production patterns"*
+
+| Target | Project Contribution |
+|--------|---------------------|
+| **12.4** - Environmentally sound management of chemicals and wastes | Supports safe management of toxics and chemicals by autonomous monitoring and early detection. |
+| **12.6** - Encourage Companies to Adopt Sustainable Practices and Sustainability Reporting |Encourages companies to adopt sustainable practice by raising accountability.|
+
+#### **Possible Negative SDG Interactions:**
+
+| Target | Description | Mitigation |
+|--------|-------------|------------|
+| **SDG 7.2 — Increased energy usage for model training** | Training and large-scale inference raise electricity demand and emissions. | Efficient training (mixed precision, smaller models), model distillation, carbon-aware scheduling, and using low‑carbon data centers. |
+| **SDG 8.5 — Automation may reduce certain job roles** | Automated monitoring could displace manual inspection and related operational roles. | Retraining and upskilling, redeployment to higher‑value tasks, stakeholder engagement, and phased implementation. |
+| **SDG 9.1 — Reliance on advanced compute and satellite systems may widen technological inequalities** | High-cost infrastructure and expertise favor well‑resourced actors and regions. | Open‑source tools, low‑cost inference options (edge/cloud hybrid), capacity building, partnerships, and documentation. |
 
 ### 2.2 Limitations and Ethical Considerations
 
@@ -114,28 +123,17 @@ pose severe threats to marine ecosystems, fisheries, and coastal communities.
 
 | Limitation | Impact | Mitigation |
 |------------|--------|------------|
-| **SAR Resolution** | Sentinel-1 (10m) may miss small spills | Multi-scale analysis, fusion with optical data |
-| **Lookalike Phenomena** | Natural slicks, algal blooms cause false positives | Multi-class classification (Oil, Lookalike, No oil) |
+| **Lookalike Phenomena** | Natural slicks, algal blooms cause false positives | Provide more data for classification (Oil, Lookalike, No oil) |
 | **Weather Effects** | Extreme winds disperse oil signatures | Temporal analysis, wind speed thresholds |
-| **Model Generalization** | Performance may vary across regions | Fine-tuning with regional data |
+| **Model Generalization** | Performance may vary across regions | Fine-tuning with regional data recommended |
 
 #### Ethical Considerations
 
 | Consideration | Analysis | Mitigation |
 |---------------|----------|------------|
-| **False Positives** | Wasted response resources, unnecessary alarms | Conservative thresholds, human verification |
-| **False Negatives** | Missed spills cause environmental damage | High recall priority, ensemble methods |
-| **Dual Use** | Technology could aid illegal dumping evasion | Restricted model access for sensitive applications |
+| **False Positives** | Wasted response resources, unnecessary alarms, degradation in trust | Involvement of some human verification |
 | **Data Privacy** | Ship tracking correlation with spills | Anonymization of vessel data |
 | **Environmental Justice** | Developing nations may lack implementation capacity | Open-source release, documentation, capacity building |
-
-#### Bias Assessment
-
-| Bias Type | Risk Level | Mitigation |
-|-----------|------------|------------|
-| Geographic bias | Medium | Training data from multiple ocean regions |
-| Temporal bias | Low | Multi-season data collection |
-| Class imbalance | High | Weighted loss function, oversampling |
 
 ### 2.3 Scalability and Sustainability Analysis
 
@@ -143,39 +141,23 @@ pose severe threats to marine ecosystems, fisheries, and coastal communities.
 
 | Dimension | Current State | Scalability Path |
 |-----------|--------------|------------------|
-| **Geographic** | North Sea focus | Global ocean coverage with Sentinel-1 |
-| **Temporal** | Batch processing | Near real-time with streaming architecture |
-| **Computational** | Single GPU | Cloud-based distributed inference |
-| **Integration** | Standalone | API for maritime monitoring systems |
-
-#### Computational Sustainability
-
-| Phase | Resource Requirement | Carbon Footprint |
-|-------|---------------------|------------------|
-| Training (100 epochs) | 1 GPU × 4 hours | ~5-10 kg CO₂e |
-| Daily Inference (1000 images) | 1 GPU × 0.5 hours | ~0.1-0.2 kg CO₂e |
-| **Annual Operation** | ~200 GPU-hours | ~50-100 kg CO₂e |
-
-**Net Environmental Benefit:** A single detected oil spill enables response that prevents:
-- ~100-1000 tonnes of oil spread
-- ~$1-10 million in cleanup costs
-- Ecosystem damage affecting ~100-1000 km² of ocean
-
-The computational carbon cost is negligible compared to environmental benefits.
+| **Geographic** | European Sea | Sentinel-1 data available worldwide, more labelled annotations are required however for better performance |
+| **Computational** | Single GPU | Increased compute resources through AWS or other cloud integration |
 
 #### Long-term Sustainability
 
-- **Data Continuity:** Sentinel-1 operational until 2030+, successor missions planned
+- **Hardware Lifecycle** Sentinel-1 operational until 2030+ with successor missions planned, ensuring data continuity for long term
 - **Model Maintenance:** Transfer learning enables adaptation to new sensors
 - **Community Support:** Open-source enables distributed maintenance
 
 ---
 
-## 3. Dataset Curation and Preprocessing
 
-### 3.1 Dataset Identification
+## 3. Dataset Curation and Preprocessing 
 
-**Selected Dataset:** Sentinel-1 SAR Oil Spill Detection Dataset
+### Covered in depth in [README_DATA_GUIDE.md](./README_DATA_GUIDE.md)
+
+**Selected Dataset:** Sentinel-1 SAR Oil Spill Detection Dataset from previous work by Trujillo-Acatitla et al. (2024)
 
 | Attribute | Specification |
 |-----------|--------------|
@@ -188,28 +170,11 @@ The computational carbon cost is negligible compared to environmental benefits.
 | **Geographic Coverage** | Global oceans |
 | **Temporal Coverage** | 2014-present |
 
-**Dataset Composition:**
+---
 
-| Category | Training Samples | Validation Samples | Test Samples |
-|----------|-----------------|-------------------|--------------|
-| Oil Spill | 450 | 100 | 150 |
-| Lookalike | 380 | 85 | 120 |
-| No Oil | 520 | 115 | 180 |
-| **Total** | **1350** | **300** | **450** |
+**Ethical Considerations of Sentinel-1 Dataset:**
 
-### 3.2 Data Collection and Access Process
-
-**Access Method:**
-1. Registered on [Copernicus Open Access Hub](https://scihub.copernicus.eu/)
-2. Used OpenSearch API to query relevant scenes
-3. Downloaded Level-1 GRD (Ground Range Detected) products
-
-**Selection Criteria:**
-- Confirmed oil spill incidents (ITOPF, EMSA CleanSeaNet)
-- Known lookalike events (natural seeps, biogenic slicks)
-- Clean ocean samples (random global sampling)
-
-**Ethical Considerations:**
+There are no direct ethical concerns with the Sentinel-1 dataset itself, as it contains no personal data. However, the following considerations are noted:
 
 | Aspect | Consideration |
 |--------|---------------|
@@ -217,63 +182,6 @@ The computational carbon cost is negligible compared to environmental benefits.
 | **Attribution** | "Contains modified Copernicus Sentinel data [2024]" |
 | **Privacy** | No personal data in satellite imagery |
 | **Consent** | Public domain environmental monitoring |
-| **Harm Prevention** | Dual-use risks documented and mitigated |
-
-### 3.3 Data Preprocessing Pipeline
-
-**Preprocessing Steps (SNAP Toolbox):**
-
-```
-1. Apply Orbit File → Precise orbit correction
-2. Thermal Noise Removal → Reduce sensor noise
-3. Calibration → Convert to σ⁰ backscatter
-4. Speckle Filtering (Lee 5×5) → Reduce SAR speckle
-5. Range-Doppler Terrain Correction → Geocoding
-6. Subset/Resample → 256×256 pixel tiles
-7. Export → GeoTIFF format
-```
-
-**Implementation (Python):**
-
-```python
-import rasterio
-import numpy as np
-from pathlib import Path
-
-def preprocess_sar_image(input_path, output_path, tile_size=256):
-    """Preprocess SAR image for model input."""
-    with rasterio.open(input_path) as src:
-        # Read and normalize backscatter
-        data = src.read(1).astype(np.float32)
-        
-        # Convert to dB scale
-        data_db = 10 * np.log10(np.clip(data, 1e-10, None))
-        
-        # Normalize to [0, 1]
-        data_norm = (data_db - data_db.min()) / (data_db.max() - data_db.min())
-        
-        # Tile extraction
-        tiles = extract_tiles(data_norm, tile_size)
-        
-        # Save tiles
-        for i, tile in enumerate(tiles):
-            save_tile(tile, output_path / f"{i:05d}.tif")
-```
-
-**Mask Generation:**
-- Binary masks created from expert annotations
-- Oil regions = 1 (white), Background = 0 (black)
-- Quality control: Inter-annotator agreement > 90%
-
-**Data Augmentation:**
-
-| Augmentation | Probability | Rationale |
-|--------------|-------------|-----------|
-| Horizontal Flip | 0.5 | Orientation invariance |
-| Vertical Flip | 0.5 | Orientation invariance |
-| Random Rotation (90°) | 0.5 | Orientation invariance |
-| Brightness Adjustment | 0.3 | Sensor variation |
-| Gaussian Noise | 0.2 | Speckle simulation |
 
 ---
 
@@ -282,308 +190,70 @@ def preprocess_sar_image(input_path, output_path, tile_size=256):
 ### 4.1 Architectural Modifications
 
 **Baseline Architecture (Deforestation):**
-- Input: 4-channel (RGB + NIR) optical imagery
+- Input: 4-channel amazon rainforest imagery (RGB + NIR) from Sentinel-2
 - Task: Binary segmentation (forest/deforested)
 - Context: Amazon rainforest
 
 **Adapted Architecture (Oil Spill):**
-- Input: 1-channel SAR backscatter imagery
+- Input: 1-channel SAR backscatter imagery from Sentinel-1 (VV polarization)
 - Task: Binary segmentation (oil/background)
 - Context: Ocean surface
 
-**Modifications Made:**
+---
 
-| Component | Original | Adapted | Justification |
-|-----------|----------|---------|---------------|
-| **Input Channels** | 4 (RGB+NIR) | 1 (SAR VV) | SAR imagery is single-polarization |
-| **First Conv Layer** | Conv2d(4, 64) | Conv2d(1, 64) | Match input dimensions |
-| **Normalization** | ImageNet stats | SAR-specific | Different intensity distributions |
-| **Output Activation** | Sigmoid | Sigmoid | Binary segmentation unchanged |
-| **Loss Function** | BCE | Weighted BCE | Address class imbalance |
+**Modifications Made:** Model has been adapted with a **weighted binary cross-entropy** loss function to address class imbalance, as oil pixels are sparse compared to the ocean background.
 
-**Architecture Diagram:**
+### 4.2 Hyperparameter Adjustments
 
-```
-Input (1×256×256)
-    ↓
-[Encoder Path]
-    Conv Block 1 (64) → Attention Gate → Skip Connection
-    ↓ MaxPool
-    Conv Block 2 (128) → Attention Gate → Skip Connection
-    ↓ MaxPool
-    Conv Block 3 (256) → Attention Gate → Skip Connection
-    ↓ MaxPool
-    Conv Block 4 (512) → Attention Gate → Skip Connection
-    ↓ MaxPool
-[Bottleneck]
-    Conv Block 5 (1024)
-    ↓
-[Decoder Path]
-    UpConv + Attention + Skip → Conv Block (512)
-    ↓
-    UpConv + Attention + Skip → Conv Block (256)
-    ↓
-    UpConv + Attention + Skip → Conv Block (128)
-    ↓
-    UpConv + Attention + Skip → Conv Block (64)
-    ↓
-Output Conv (1) + Sigmoid
-    ↓
-Output (1×256×256)
-```
+| Hyperparameter | Original Value (Deforestation) | Adapted Value (Oil Spill) | Rationale |
+|----------------|-------------------------------|---------------------------|-----------|
+| Loss Function | BCE | Weighted BCE | Address class imbalance |
+| Learning Rate | 5e-4 | 1e-4 | In order to improve stability |
+| Batch Size | 4 | 8 | Increased for better GPU utilization |
+| Epochs | 50 | 20 | Increased runtime due to datasize |
 
-**Attention Gate Implementation:**
-```python
-class AttentionGate(nn.Module):
-    def __init__(self, F_g, F_l, F_int):
-        super().__init__()
-        self.W_g = nn.Conv2d(F_g, F_int, kernel_size=1)
-        self.W_x = nn.Conv2d(F_l, F_int, kernel_size=1)
-        self.psi = nn.Conv2d(F_int, 1, kernel_size=1)
-        self.relu = nn.ReLU(inplace=True)
-        self.sigmoid = nn.Sigmoid()
-    
-    def forward(self, g, x):
-        g1 = self.W_g(g)
-        x1 = self.W_x(x)
-        psi = self.relu(g1 + x1)
-        psi = self.sigmoid(self.psi(psi))
-        return x * psi  # Attention-weighted features
-```
-
-### 4.2 Hyperparameter Tuning
-
-**Tuning Strategy:** Grid search with cross-validation
-
-**Search Space:**
-
-| Hyperparameter | Search Range | Optimal Value |
-|----------------|--------------|---------------|
-| Learning Rate | [1e-5, 1e-4, 1e-3] | **1e-4** |
-| Batch Size | [4, 8, 16, 32] | **16** |
-| Optimizer | [Adam, AdamW, SGD] | **Adam** |
-| Weight Decay | [0, 1e-5, 1e-4] | **1e-5** |
-| Loss Function | [BCE, Weighted BCE, Dice, Focal] | **Weighted BCE** |
-| Positive Weight | [1.0, 2.0, 3.0, 5.0] | **3.0** |
-| Epochs | [50, 100, 150] | **100** |
-| LR Scheduler | [None, StepLR, CosineAnnealing] | **StepLR** |
-| Step Size | [20, 30, 50] | **30** |
-| Gamma | [0.1, 0.5] | **0.1** |
-
-**Tuning Results:**
-
-| Configuration | Val IoU | Val F1 | Notes |
-|---------------|---------|--------|-------|
-| BCE, lr=1e-4 | 45.2% | 62.3% | Baseline |
-| Weighted BCE (w=2.0) | 46.8% | 64.1% | Improved |
-| Weighted BCE (w=3.0) | **48.8%** | **65.6%** | **Best** |
-| Weighted BCE (w=5.0) | 47.1% | 63.8% | Over-weighted |
-| Dice Loss | 44.5% | 61.2% | Underperformed |
-| Focal Loss | 46.2% | 63.5% | Competitive |
-
-**Final Training Configuration:**
-
-```python
-config = {
-    'model': 'AttentionUNet',
-    'input_channels': 1,
-    'output_channels': 1,
-    'learning_rate': 1e-4,
-    'batch_size': 16,
-    'epochs': 100,
-    'optimizer': 'Adam',
-    'weight_decay': 1e-5,
-    'loss': 'WeightedBCE',
-    'pos_weight': 3.0,
-    'scheduler': 'StepLR',
-    'step_size': 30,
-    'gamma': 0.1,
-    'early_stopping_patience': 15
-}
-```
 
 ---
 
 ## 5. Model Evaluation and Comparison
 
-### 5.1 Performance Comparison: Original vs. Adapted
+### Performance Comparison: Original vs. Adapted
 
-**Baseline (Deforestation Detection):**
+**Reproduced Baseline (Deforestation Detection):**
 
-| Metric | Value |
-|--------|-------|
-| Accuracy | 98.1% |
-| Precision | 91.0% |
-| Recall | 91.4% |
-| F1-Score | 91.2% |
-| IoU | 84.7% |
+| Baseline vs Reproduced | Accuracy | Precision | Recall | F1 |
+|------------------------|----------|-----------|--------|-----|
+| Baseline (Paper) | 97.5% | 97.6% | 97.5% | 97.5% |
+| Reproduced | 97% | 98.1% | 95.9% | 97% |
 
-**Adapted Model - BCE Loss:**
+**Adapted Model (Oil Spill Detection):**
+| Metrics | BCE | Weighted BCE (Recommended) | Δ from Reproduced Baseline |
+|---------|-----|---------------------------|-----------------|
+| Accuracy | 97.9% | **98.3%** | +1.3% |
+| Precision | 87.6% | 74.1% | -24.0% |
+| Recall | 29.1% | **58.8%** | -37.1% |
+| F1-Score | 43.7% | **65.6%** | -31.4% |
+| IoU | 28.0% | **48.8%** | - |
 
-| Metric | Value | Δ from Baseline |
-|--------|-------|-----------------|
-| Accuracy | 98.1% | 0.0% |
-| Precision | 80.9% | -10.1% |
-| Recall | 50.3% | -41.1% |
-| F1-Score | 62.0% | -29.2% |
-| IoU | 44.9% | -39.8% |
+**Performance Analysis:** 
 
-**Adapted Model - Weighted BCE Loss (Recommended):**
-
-| Metric | Value | Δ from Baseline | Δ from BCE |
-|--------|-------|-----------------|------------|
-| Accuracy | 98.3% | +0.2% | +0.2% |
-| Precision | 74.1% | -16.9% | -6.8% |
-| Recall | 58.8% | -32.6% | +8.5% |
-| F1-Score | 65.6% | -25.6% | +3.6% |
-| IoU | 48.8% | -35.9% | +3.9% |
-
-**Performance Gap Analysis:**
+Model achieved high accuracy, but scores lower on other metrics.
+- Accuracy is high as “no oil” cases are abundant.
+- Model can detect oil spills correctly but does not segment spills perfectly.
 
 The adapted model shows lower performance than the baseline due to:
 
 1. **Task Complexity**: Oil spills have irregular, diffuse boundaries vs. clear forest edges
-2. **Class Imbalance**: Oil pixels are sparse (<5% of ocean images)
+2. **Class Imbalance**: Oil pixels are much sparse (<5% of ocean images and pixels)
 3. **Lookalike Confusion**: Natural slicks mimic oil signatures
-4. **Single Channel**: SAR lacks spectral diversity of optical imagery
+4. **Epoch Limitations**: Fewer training epochs (20 vs 50) due to compute constraints
 
-### 5.2 Metrics Appropriateness
+### Metrics Appropriateness
 
 | Metric | Appropriateness | Rationale |
 |--------|-----------------|-----------|
-| **Accuracy** | ⚠️ Limited | Class imbalance makes accuracy misleading |
+| **Accuracy** | Not Appropriate | Class imbalance makes accuracy misleading, this is only kept for comparison |
 | **Precision** | ✓ Important | Minimizes false alarm costs |
 | **Recall** | ✓ Critical | Missed spills have severe consequences |
 | **F1-Score** | ✓ Primary | Balances precision and recall |
 | **IoU** | ✓ Primary | Measures segmentation quality |
-| **AUC-ROC** | ✓ Useful | Threshold-independent performance |
-
-**Confusion Matrix (Weighted BCE):**
-
-```
-                    Predicted
-                 Negative  Positive
-Actual Negative   145,234    2,891    (Specificity: 98.0%)
-       Positive    12,456   17,789    (Recall: 58.8%)
-                            
-                (NPV: 92.1%) (Precision: 74.1%)
-```
-
-### 5.3 Statistical Significance Testing
-
-**Methodology:** 5-fold cross-validation with paired t-test
-
-**Hypothesis:** H₀: No significant difference between BCE and Weighted BCE
-
-**Results:**
-
-| Metric | BCE (Mean±SD) | W-BCE (Mean±SD) | t-statistic | p-value |
-|--------|---------------|-----------------|-------------|---------|
-| IoU | 44.2±1.8% | 48.5±1.5% | 4.23 | **0.013** |
-| F1 | 61.5±2.1% | 65.2±1.8% | 3.89 | **0.018** |
-| Recall | 49.8±3.2% | 58.2±2.9% | 4.67 | **0.009** |
-| Precision | 80.2±2.5% | 74.5±2.8% | -3.21 | **0.032** |
-
-**Conclusions:**
-- Weighted BCE significantly improves IoU (p=0.013), F1 (p=0.018), and Recall (p=0.009)
-- Precision trade-off is significant (p=0.032) but acceptable for environmental monitoring
-- **Weighted BCE is statistically superior for oil spill detection**
-
-**Effect Size (Cohen's d):**
-
-| Metric | Cohen's d | Interpretation |
-|--------|-----------|----------------|
-| IoU | 2.59 | Large effect |
-| F1 | 1.89 | Large effect |
-| Recall | 2.74 | Large effect |
-
-### 5.4 Failure Case Analysis
-
-**Failure Categories:**
-
-| Category | Frequency | Example | Root Cause |
-|----------|-----------|---------|------------|
-| **Lookalike Misclassification** | 35% | Biogenic slicks detected as oil | Similar backscatter signatures |
-| **Boundary Imprecision** | 28% | Over/under-segmentation of spill edges | Diffuse oil boundaries in SAR |
-| **Small Spill Missed** | 22% | Spills <100m² not detected | Resolution limitations |
-| **Weather Artifacts** | 10% | Wind streaks classified as oil | Similar dark patterns |
-| **Sensor Noise** | 5% | Thermal noise false positives | Preprocessing limitations |
-
-**Representative Failure Cases:**
-
-**Case 1: Lookalike Confusion**
-- **Input:** Natural oil seep in Gulf of Mexico
-- **Prediction:** Classified as oil spill
-- **Ground Truth:** Natural seep (not pollution)
-- **Impact:** False alarm, wasted response resources
-- **Mitigation:** Multi-temporal analysis, seep database integration
-
-**Case 2: Boundary Under-segmentation**
-- **Input:** Large Deepwater Horizon-type spill
-- **Prediction:** 65% of true area detected
-- **Ground Truth:** Full spill extent
-- **Impact:** Underestimated cleanup requirements
-- **Mitigation:** Post-processing with CRF, multi-scale inference
-
-**Case 3: Small Spill Missed**
-- **Input:** 50m² vessel discharge
-- **Prediction:** No detection
-- **Ground Truth:** Confirmed illegal discharge
-- **Impact:** Pollution went unreported
-- **Mitigation:** Higher resolution data (Sentinel-1 SLC mode)
-
-**Error Distribution by Oil Spill Size:**
-
-| Spill Size | Detection Rate | Common Error |
-|------------|---------------|--------------|
-| <100 m² | 23% | Missed detection |
-| 100-1000 m² | 67% | Boundary imprecision |
-| 1000-10000 m² | 89% | Lookalike confusion |
-| >10000 m² | 95% | Minor under-segmentation |
-
----
-
-## 6. Conclusions and Future Work
-
-### 6.1 Key Findings
-
-1. **Successful Baseline Reproduction:** Original deforestation detection results replicated within ±1% of paper metrics
-
-2. **Effective Domain Adaptation:** Attention U-Net successfully adapted from optical deforestation to SAR oil spill detection
-
-3. **Loss Function Importance:** Weighted BCE significantly outperforms standard BCE for imbalanced marine detection
-
-4. **SDG Alignment:** Project directly contributes to SDG 14 (Life Below Water) and SDG 13 (Climate Action)
-
-5. **Scalability Potential:** Architecture suitable for global ocean monitoring with Sentinel-1
-
-### 6.2 Limitations
-
-- Performance gap between deforestation (91% F1) and oil spill (66% F1) detection
-- Lookalike phenomena remain challenging
-- Small spill detection limited by sensor resolution
-
-### 6.3 Future Work
-
-| Priority | Task | Expected Impact |
-|----------|------|-----------------|
-| High | Multi-temporal analysis | Reduce lookalike false positives |
-| High | Class-weighted sampling | Address extreme imbalance |
-| Medium | Ensemble methods | Improve robustness |
-| Medium | Higher resolution data | Detect smaller spills |
-| Low | Real-time deployment | Enable operational monitoring |
-
----
-
-## References
-
-1. Oktay, O., et al. (2018). Attention U-Net: Learning Where to Look for the Pancreas. MIDL.
-2. European Space Agency. Sentinel-1 SAR User Guide.
-3. ITOPF. Oil Tanker Spill Statistics 2023.
-4. Krestenitis, M., et al. (2019). Oil Spill Identification from Satellite Images Using Deep Neural Networks. Remote Sensing.
-5. Trujillo-Acatitla, R., et al. (2024). Marine oil spill detection and segmentation in SAR data with two steps Deep Learning framework. Marine Pollution Bulletin.
-6. United Nations. Sustainable Development Goals. https://sdgs.un.org/goals
-
----
-
-*Document prepared for COMP0173 Coursework - Sustainability Analysis of AI Adaptation for Environmental Monitoring*
