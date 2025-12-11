@@ -201,16 +201,17 @@ The system computes the following segmentation metrics:
 
 ### Download from HuggingFace
 
-Pre-trained models are available at: **[Bobsicle/attention_u_net_oil_spill](https://huggingface.co/Bobsicle/attention_u_net_oil_spill)**
+Pre-trained models are available at: **[huggingface/attention_u_net_oil_spill](https://huggingface.co/Bobsicle/attention_u_net_oil_spill)**
 
-**Two models available:**
+**Two models available for oil spill detection:**
 1. `attention_unet_oil_spill.pth` - Trained with standard BCE loss
 2. `attention_unet_oil_spill_improved.pth` - **Trained with Weighted BCE (RECOMMENDED)**
+3. `attention_unet_best.pth` - Deforestation detection model
 
 ### Download Instructions
 
 **Option 1: Manual Download**
-1. Visit [Bobsicle/attention_u_net_oil_spill](https://huggingface.co/Bobsicle/attention_u_net_oil_spill)
+1. Visit [huggingface/attention_u_net_oil_spill](https://huggingface.co/Bobsicle/attention_u_net_oil_spill)
 2. Download `attention_unet_oil_spill_improved.pth`
 3. Place it in the `models/` directory:
    ```bash

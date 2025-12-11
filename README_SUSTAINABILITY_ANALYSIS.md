@@ -1,6 +1,6 @@
 # Sustainability Analysis: Adaptation of Attention U-Net for Satellite-Based Ocean Oil Spill Detection
 
-This document provides a comprehensive sustainability analysis covering the replication of baseline AI methodology, identification of contextually relevant challenges, dataset curation, model adaptation, and performance evaluation.
+This document provides a short report on the technical and sustainability aspects of adapting the Attention U-Net architecture for the detection of oil spills in satellite SAR imagery. It covers the replication of the baseline AI methodology, the contextual relevance of the marine oil spill detection challenge, scalability and sustainability considerations, dataset curation, model architecture adaptations, and evaluation results.
 
 ---
 
@@ -9,19 +9,6 @@ This document provides a comprehensive sustainability analysis covering the repl
 ### 1.1 Repository Cloning and Setup
 
 **Original Repository:** The baseline Attention U-Net architecture was adapted from deforestation detection research, with the original implementation available in the `deforestation-adaptation/` directory.
-
-```bash
-# Clone the repository
-git clone https://github.com/nicholas-tobias-00/attention_unet_for_oil_spill.git
-cd attention_unet_for_oil_spill
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
 
 ### 1.2 Dependencies and Environment Setup
 
@@ -39,20 +26,13 @@ pip install -r requirements.txt
 | tqdm | ≥4.65.0 | Progress bars |
 | rasterio | ≥1.3.0 | GeoTIFF processing |
 
-**Hardware Requirements:**
-- GPU: NVIDIA GPU with ≥8GB VRAM (recommended)
-- RAM: ≥16GB system memory
-- Storage: ≥10GB for dataset and models
-
-**Environment Verification:**
-```python
-import torch
-print(f"PyTorch: {torch.__version__}")
-print(f"CUDA Available: {torch.cuda.is_available()}")
-print(f"GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'N/A'}")
-```
+**Hardware for Baseline Reproduction:**
+- GPU: NVIDIA RTX 5070
+- RAM: 32GB system memory
 
 ### 1.3 Baseline Results Reproduction
+
+See the notebook in `deforestation-adaptation/notebooks/deforestation_reproduction.ipynb` for replication of original results.
 
 **Original Paper Metrics (Deforestation Detection):**
 
@@ -66,25 +46,19 @@ print(f"GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'N
 
 *All metrics within ±5% threshold ✓*
 
-**Reproduction Process:**
-1. Downloaded original Amazon deforestation dataset
-2. Applied identical preprocessing pipeline
-3. Trained with same hyperparameters (100 epochs, Adam optimizer, lr=1e-4)
-4. Evaluated on held-out test set
-
-### 1.4 Reproducible Notebooks and Scripts
-
-| File | Purpose |
-|------|---------|
-| `notebooks/deforestation_reproduction.ipynb` | Complete baseline reproduction |
-| `notebooks/oil_spill_detection.ipynb` | Adapted model training |
+**Deforestation Reproduction Process:**
+1. Download original Amazon deforestation dataset and run the following scripts:
+    - preprocess-rgb-data.py
+    - preprocess-4band-amazon-data.py
+    - preprocess-4band-atlantic-forest-data.py
+2. Clone Attention U-Net model and training scripts from `deforestation-adaptation/predictor.py`
+2. Trained with same hyperparameters (50 epochs, Adam optimizer, lr=1e-4)
+3. Evaluated on held-out test set
 
 **Pre-trained Models Available:**
-- `deforestation-adaptation/models/attention_unet_best.pth` - Baseline model
-- `models/attention_unet_oil_spill.pth` - Adapted model (BCE)
-- `models/attention_unet_oil_spill_improved.pth` - Adapted model (Weighted BCE)
+- `models/attention_unet_best.pth` - Baseline model
 
-**HuggingFace Repository:** [Bobsicle/attention_u_net_oil_spill](https://huggingface.co/Bobsicle/attention_u_net_oil_spill)
+**HuggingFace Repository:** [huggingface/attention_u_net_oil_spill](https://huggingface.co/Bobsicle/attention_u_net_oil_spill)
 
 ---
 
