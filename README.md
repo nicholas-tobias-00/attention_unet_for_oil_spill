@@ -18,40 +18,41 @@ A deep learning system for detecting oil spills in SAR (Synthetic Aperture Radar
 ```
 attention-u-net_for_oil-spill/
 ├── models/
-│   ├── attention_unet_oil_spill.pth        # Pre-trained model (BCE loss)
-│   └── attention_unet_oil_spill_improved.pth  # Pre-trained model (Weighted BCE - Recommended)
+│   ├── attention_unet_oil_spill.pth            # Pre-trained model (BCE loss)
+│   └── attention_unet_oil_spill_improved.pth   # Pre-trained model (Weighted BCE - Recommended)
 ├── notebooks/
-│   ├── oil_spill_detection.ipynb           # Oil spill detection training & evaluation
-│   └── deforestation_reproduction.ipynb    # Deforestation paper reproduction
-├── dataset/                                # Oil spill SAR dataset
+│   ├── oil_spill_detection.ipynb               # Oil spill detection training & evaluation
+│   └── deforestation_reproduction.ipynb        # Deforestation paper reproduction
+├── dataset/                                    # Oil spill SAR dataset
 │   ├── 01_Train_Val_Oil_Spill_images/
-│   │   └── Oil/                            # Oil spill TIF images
+│   │   └── Oil/                                # Oil spill TIF images
 │   ├── 01_Train_Val_Oil_Spill_mask/
-│   │   └── Mask_oil/                       # Binary masks for oil
+│   │   └── Mask_oil/                           # Binary masks for oil
 │   ├── 01_Train_Val_Lookalike_images/
-│   │   └── Lookalike/                      # Lookalike TIF images
+│   │   └── Lookalike/                           # Lookalike TIF images
 │   ├── 01_Train_Val_Lookalike_mask/
-│   │   └── Mask_lookalike/                 # Binary masks for lookalike
+│   │   └── Mask_lookalike/                      # Binary masks for lookalike
 │   ├── 01_Train_Val_No_Oil_images/
-│   │   └── No_oil/                         # Clean ocean TIF images
+│   │   └── No_oil/                              # Clean ocean TIF images
 │   ├── 01_Train_Val_No_Oil_mask/
-│   │   └── Mask_no_oil/                    # Binary masks for no oil
+│   │   └── Mask_no_oil/                        # Binary masks for no oil
 │   └── 02_Test_images_and_ground_truth/
-│       ├── Images/                         # Test images
+│       ├── Images/                             # Test images
 │       │   ├── Oil/
 │       │   ├── Lookalike/
 │       │   └── No oil/
-│       └── Mask/                           # Test masks
+│       └── Mask/                               # Test masks
 │           ├── Oil/
 │           ├── Lookalike/
 │           └── No oil/
-├── deforestation-adaptation/               # Deforestation project
+├── deforestation-adaptation/                   # Deforestation project
 │   ├── models/
-│   │   └── attention_unet_best.pth         # Deforestation model
+│   │   └── attention_unet_best.pth             # Deforestation model
 │   └── dataset/
-├── requirements.txt                        # Python dependencies
-├── README.md                               # This file
-└── DATA_GUIDE.md                           # Data preprocessing with SNAP
+├── requirements.txt                            # Python dependencies
+├── README.md                                   # This file
+├── README_DATA_GUIDE.md                        # Data preprocessing with SNAP
+└── README_SUSTAINABILITY_ANALYSIS.md           # Small Report on AI Application
 ```
 
 ## Installation
@@ -59,9 +60,7 @@ attention-u-net_for_oil-spill/
 ### Prerequisites
 
 - **Python 3.11+**
-- **CUDA-capable GPU** (recommended for training)
-  - Minimum 8GB VRAM recommended
-  - CPU training is possible but significantly slower
+- **CUDA-capable GPU** (I tested with RTX 5070 ~ 5 hours of training for 20 epochs)
 - **Weights & Biases account** (optional, for experiment tracking)
   - Sign up at [wandb.ai](https://wandb.ai)
 
@@ -91,13 +90,17 @@ wandb login
 # Or set environment variable: export WANDB_API_KEY=your_api_key
 ```
 
+5. **For Report on Oil Spill Implementation, Refer to [SUSTAINABILITY_ANALYSIS.md](SUSTAINABILITY_ANALYSIS.md)**
+
+6. **For complete preprocessing instructions** (downloading Sentinel-1 data and processing with SNAP), **refer to [DATA_GUIDE.md](DATA_GUIDE.md)**
+
+
 ## Data Preparation
 
 ### Dataset Source
 
 This project uses **Sentinel-1 SAR** satellite imagery for oil spill detection. The dataset should contain preprocessed SAR images in GeoTIFF format.
 
-**📖 For complete preprocessing instructions** (downloading Sentinel-1 data and processing with SNAP), **refer to [DATA_GUIDE.md](DATA_GUIDE.md)**
 
 ### Directory Structure
 
