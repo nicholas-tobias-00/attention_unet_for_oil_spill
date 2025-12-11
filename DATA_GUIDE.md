@@ -4,45 +4,78 @@ This document provides detailed information about the expected data structure fo
 
 ## Overview
 
-The system expects SAR (Synthetic Aperture Radar) satellite images organized in a specific directory structure with corresponding segmentation masks.
+The system expects SAR (Synthetic Aperture Radar) satellite images organized in a specific directory structure with corresponding segmentation masks. All images should be in **TIF format**.
+
+Complete dataset for oil spills can be downloaded from the following directories (total 127 GB):
+1. https://zenodo.org/records/8346860
+2. https://zenodo.org/records/8253899
+3. https://zenodo.org/records/8346860
+
 
 ## Directory Structure
 
+### Training/Validation Data
+
+Downloaded dataset should be extracted with the following directory:
+
 ```
-data/
-├── images/
-│   ├── oil/
-│   │   ├── image_001.png
-│   │   ├── image_002.png
-│   │   └── ...
-│   ├── lookalike/
-│   │   ├── image_001.png
-│   │   ├── image_002.png
-│   │   └── ...
-│   └── no_oil/
-│       ├── image_001.png
-│       ├── image_002.png
+dataset/
+├── 01_Train_Val_Oil_Spill_images/
+│   └── Oil/
+│       ├── 00000.tif
+│       ├── 00001.tif
+│       ├── 00002.tif
 │       └── ...
-└── masks/
-    ├── oil/
-    │   ├── image_001.png
-    │   ├── image_002.png
-    │   └── ...
-    ├── lookalike/
-    │   ├── image_001.png
-    │   ├── image_002.png
-    │   └── ...
-    └── no_oil/
-        ├── image_001.png
-        ├── image_002.png
-        └── ...
+├── 01_Train_Val_Oil_Spill_mask/
+│   └── Mask_oil/
+│       ├── 00000.tif
+│       ├── 00001.tif
+│       ├── 00002.tif
+│       └── ...
+├── 01_Train_Val_Lookalike_images/
+│   └── Lookalike/
+│       ├── 00000.tif
+│       ├── 00001.tif
+│       └── ...
+├── 01_Train_Val_Lookalike_mask/
+│   └── Mask_lookalike/
+│       ├── 00000.tif
+│       ├── 00001.tif
+│       └── ...
+├── 01_Train_Val_No_Oil_images/
+│   └── No_oil/
+│       ├── 00000.tif
+│       ├── 00001.tif
+│       └── ...
+├── 01_Train_Val_No_Oil_mask/
+│   └── Mask_no_oil/
+│       ├── 00000.tif
+│       ├── 00001.tif
+│       └── ...
+└── 02_Test_images_and_ground_truth/
+    ├── Images/
+    │   ├── Lookalike/
+    │   │   └── *.tif
+    │   ├── No oil/
+    │   │   └── *.tif
+    │   └── Oil/
+    │       └── *.tif
+    └── Mask/
+        ├── Lookalike/
+        │   └── *.tif
+        ├── No oil/
+        │   └── *.tif
+        └── Oil/
+            └── *.tif
 ```
 
 ## Image Categories
 
-### 1. Oil
+### 1. Oil Spill
 - **Description**: SAR images containing actual oil spills
 - **Characteristics**: Dark patches on the ocean surface due to dampening of surface waves
+- **Image folder**: `01_Train_Val_Oil_Spill_images/Oil/`
+- **Mask folder**: `01_Train_Val_Oil_Spill_mask/Mask_oil/`
 - **Mask**: Binary mask highlighting the oil spill regions (white=255, background=0)
 
 ### 2. Lookalike
@@ -52,59 +85,57 @@ data/
   - Low wind areas
   - Rain cells
   - Biogenic slicks
+- **Image folder**: `01_Train_Val_Lookalike_images/Lookalike/`
+- **Mask folder**: `01_Train_Val_Lookalike_mask/Mask_lookalike/`
 - **Mask**: Binary mask highlighting the lookalike regions
 
 ### 3. No Oil
 - **Description**: Clean ocean SAR images without oil spills or lookalikes
+- **Image folder**: `01_Train_Val_No_Oil_images/No_oil/`
+- **Mask folder**: `01_Train_Val_No_Oil_mask/Mask_no_oil/`
 - **Mask**: Typically all-black masks (all zeros) or empty regions
 
 ## Image Specifications
 
 ### Input Images
 
-- **Format**: PNG, JPG, JPEG, TIF, or TIFF
+- **Format**: TIF (GeoTIFF)
 - **Channels**: 
-  - RGB (3 channels) - default
-  - Grayscale (1 channel) - for SAR mode
+  - Grayscale (1 channel) - SAR backscatter intensity
 - **Size**: Any size (will be resized to 256x256 by default)
 - **Bit Depth**: 8-bit or 16-bit
-- **Naming**: Consistent naming convention (e.g., `image_001.png`, `sar_20240101_001.tif`)
+- **Naming**: Zero-padded numeric format (e.g., `00000.tif`, `00001.tif`, `00002.tif`)
 
 ### Mask Images
 
-- **Format**: PNG, JPG, JPEG, TIF, or TIFF (PNG recommended)
+- **Format**: TIF
 - **Channels**: Grayscale (1 channel)
 - **Pixel Values**: 
   - 0 (black) = Background/No oil
   - 255 (white) = Oil spill/Lookalike region
 - **Size**: Should match input image size (or will be resized automatically)
-- **Naming**: Should match corresponding input image name exactly
+- **Naming**: Should match corresponding input image name exactly (e.g., `00000.tif`)
 
 ## Data Preparation Steps
 
-### Step 1: Organize Raw Data
+### Step 1: Download Dataset
 
-1. Create the main data directory structure:
+Download the oil spill SAR dataset and extract it into the `dataset/` folder.
+
+### Step 2: Verify Directory Structure
+
+Ensure your dataset follows this structure:
 ```bash
-mkdir -p data/images/oil data/images/lookalike data/images/no_oil
-mkdir -p data/masks/oil data/masks/lookalike data/masks/no_oil
-```
-
-2. Sort your SAR images into the appropriate category folders
-
-### Step 2: Create Segmentation Masks
-
-For each image, create a corresponding binary segmentation mask:
-
-```python
-import numpy as np
-from PIL import Image
-
-# Example: Create a mask
-mask = np.zeros((height, width), dtype=np.uint8)
-# Mark oil regions as 255 (white)
-mask[y1:y2, x1:x2] = 255
-Image.fromarray(mask).save('masks/oil/image_001.png')
+dataset/
+├── 01_Train_Val_Oil_Spill_images/Oil/
+├── 01_Train_Val_Oil_Spill_mask/Mask_oil/
+├── 01_Train_Val_Lookalike_images/Lookalike/
+├── 01_Train_Val_Lookalike_mask/Mask_lookalike/
+├── 01_Train_Val_No_Oil_images/No_oil/
+├── 01_Train_Val_No_Oil_mask/Mask_no_oil/
+└── 02_Test_images_and_ground_truth/
+    ├── Images/{Lookalike,No oil,Oil}/
+    └── Mask/{Lookalike,No oil,Oil}/
 ```
 
 ### Step 3: Verify Data Integrity
@@ -116,36 +147,46 @@ import os
 from PIL import Image
 
 def verify_dataset(data_root):
-    categories = ['oil', 'lookalike', 'no_oil']
+    categories = [
+        ('Oil', '01_Train_Val_Oil_Spill_images/Oil', '01_Train_Val_Oil_Spill_mask/Mask_oil'),
+        ('Lookalike', '01_Train_Val_Lookalike_images/Lookalike', '01_Train_Val_Lookalike_mask/Mask_lookalike'),
+        ('No Oil', '01_Train_Val_No_Oil_images/No_oil', '01_Train_Val_No_Oil_mask/Mask_no_oil'),
+    ]
     
-    for category in categories:
-        img_dir = os.path.join(data_root, 'images', category)
-        mask_dir = os.path.join(data_root, 'masks', category)
+    for name, img_rel, mask_rel in categories:
+        img_dir = os.path.join(data_root, img_rel)
+        mask_dir = os.path.join(data_root, mask_rel)
         
-        img_files = set(os.listdir(img_dir))
-        mask_files = set(os.listdir(mask_dir))
+        if not os.path.exists(img_dir):
+            print(f"  {name}: Image directory NOT FOUND")
+            continue
+            
+        img_files = set([f for f in os.listdir(img_dir) if f.endswith('.tif')])
+        mask_files = set([f for f in os.listdir(mask_dir) if f.endswith('.tif')])
         
-        print(f"\n{category.upper()}:")
+        print(f"\n{name.upper()}:")
         print(f"  Images: {len(img_files)}")
         print(f"  Masks: {len(mask_files)}")
         
         # Check for missing masks
         missing = img_files - mask_files
         if missing:
-            print(f"  Missing masks for: {missing}")
+            print(f"  ⚠ Missing masks for: {list(missing)[:5]}...")
         
-        # Check image-mask pairs
-        for img_file in list(img_files)[:3]:  # Check first 3
+        # Check first few image-mask pairs
+        for img_file in sorted(list(img_files))[:3]:
             img_path = os.path.join(img_dir, img_file)
             mask_path = os.path.join(mask_dir, img_file)
             
             img = Image.open(img_path)
-            mask = Image.open(mask_path)
-            
-            print(f"  {img_file}: Image {img.size}, Mask {mask.size}")
+            if os.path.exists(mask_path):
+                mask = Image.open(mask_path)
+                print(f"  {img_file}: Image {img.size}, Mask {mask.size}")
+            else:
+                print(f"  {img_file}: Image {img.size}, Mask MISSING")
 
 # Run verification
-verify_dataset('./data')
+verify_dataset('./dataset')
 ```
 
 ## Data Augmentation (Optional)
@@ -181,24 +222,43 @@ augmentation = transforms.Compose([
 
 ## Example Dataset Structure
 
-A minimal working example with 10 images per category:
+A minimal working example:
 
 ```
-data/
-├── images/
-│   ├── oil/              # 10 images with oil spills
-│   ├── lookalike/        # 10 images with lookalikes
-│   └── no_oil/           # 10 clean images
-└── masks/
-    ├── oil/              # 10 corresponding masks
-    ├── lookalike/        # 10 corresponding masks
-    └── no_oil/           # 10 corresponding masks (can be all black)
+dataset/
+├── 01_Train_Val_Oil_Spill_images/
+│   └── Oil/                      # TIF images with oil spills
+│       ├── 00000.tif
+│       ├── 00001.tif
+│       └── ...
+├── 01_Train_Val_Oil_Spill_mask/
+│   └── Mask_oil/                 # Corresponding binary masks
+│       ├── 00000.tif
+│       ├── 00001.tif
+│       └── ...
+├── 01_Train_Val_Lookalike_images/
+│   └── Lookalike/                # TIF images with lookalikes
+├── 01_Train_Val_Lookalike_mask/
+│   └── Mask_lookalike/           # Corresponding binary masks
+├── 01_Train_Val_No_Oil_images/
+│   └── No_oil/                   # Clean TIF images
+├── 01_Train_Val_No_Oil_mask/
+│   └── Mask_no_oil/              # Corresponding masks (all black)
+└── 02_Test_images_and_ground_truth/
+    ├── Images/
+    │   ├── Lookalike/
+    │   ├── No oil/
+    │   └── Oil/
+    └── Mask/
+        ├── Lookalike/
+        ├── No oil/
+        └── Oil/
 ```
 
 ## Common Issues and Solutions
 
 ### Issue 1: Missing Masks
-- **Solution**: Ensure each image has a corresponding mask with the same filename
+- **Solution**: Ensure each image has a corresponding mask with the same filename (e.g., `00000.tif` image → `00000.tif` mask)
 
 ### Issue 2: Size Mismatch
 - **Solution**: The system automatically resizes images, but verify source data isn't corrupted
@@ -206,8 +266,11 @@ data/
 ### Issue 3: Incorrect Mask Values
 - **Solution**: Masks should be binary (0 and 255), not normalized (0 and 1)
 
-### Issue 4: Empty Directories
-- **Solution**: Ensure each category directory contains at least a few samples
+### Issue 4: Wrong File Format
+- **Solution**: Ensure all files are in TIF format (`.tif` extension)
+
+### Issue 5: Incorrect Folder Structure
+- **Solution**: Follow the exact folder naming convention (e.g., `01_Train_Val_Oil_Spill_images/Oil/`)
 
 ## Dataset Statistics
 
@@ -230,12 +293,13 @@ If you don't have enough real data, consider:
 
 Before training, verify:
 
+- [ ] All images are in TIF format (`.tif`)
 - [ ] All images load correctly
 - [ ] Masks are binary (0 and 255)
-- [ ] Image-mask pairs match
-- [ ] At least 50+ samples per category
+- [ ] Image-mask pairs match by filename
+- [ ] Correct folder structure is followed
 - [ ] No corrupted files
-- [ ] Consistent naming convention
+- [ ] Zero-padded numeric naming (00000.tif, 00001.tif, etc.)
 
 ## References
 
