@@ -189,20 +189,6 @@ def verify_dataset(data_root):
 verify_dataset('./dataset')
 ```
 
-## Data Augmentation (Optional)
-
-The dataset loader supports standard PyTorch transformations. You can add augmentation:
-
-```python
-import torchvision.transforms as transforms
-
-augmentation = transforms.Compose([
-    transforms.RandomHorizontalFlip(p=0.5),
-    transforms.RandomVerticalFlip(p=0.5),
-    transforms.RandomRotation(degrees=10),
-    transforms.ColorJitter(brightness=0.2, contrast=0.2),
-])
-```
 
 ## SAR Image Characteristics
 
